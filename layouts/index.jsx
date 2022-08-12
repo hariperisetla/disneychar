@@ -5,11 +5,11 @@ import React from "react";
 
 const index = ({ children }) => {
   return (
-    <React.Fragment>
+    <div className="h-screen">
       <Header />
       <main>{children}</main>
       <Footer />
-    </React.Fragment>
+    </div>
   );
 };
 
