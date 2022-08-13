@@ -47,7 +47,7 @@ export default function Page({ disney }) {
             Search
           </button>
         </div> */}
-        <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative mx-3 pt-5 container mx-auto">
+        <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative pt-5 container mx-auto">
           {disney.data.map((chars) => (
             <CharGallery key={chars._id} chars={chars} />
           ))}

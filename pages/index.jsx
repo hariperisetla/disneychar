@@ -22,8 +22,6 @@ export default function Home({ disney }) {
     <div>
       <Head>
         <title>Disney Char</title>
-
-        <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="Disney Char"

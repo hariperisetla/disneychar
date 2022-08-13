@@ -5,9 +5,9 @@ const CharGallery = (props) => {
   return (
     <Link key={props.chars._id} href={"/characters/" + props.chars._id}>
       <a className="group relative text-white cursor-pointer border border-transparent rounded-lg">
-        <div className="group-hover:rounded-lg rounded-lg z-20 opacity-0 border-white group-hover:bg-gray-900 group-hover:opacity-80 absolute w-full h-full items-center flex justify-center ease-in-out duration-150"></div>
+        <div className="group-hover:rounded-lg rounded-lg z-10 opacity-0 border-white group-hover:bg-gray-900 group-hover:opacity-80 absolute w-full h-full items-center flex justify-center ease-in-out duration-150"></div>
         <div className="">
-          <p className="group-hover:rounded-lg rounded-lg z-40 items-center absolute flex items-center justify-center w-full h-full opacity-0 group-hover:opacity-100">
+          <p className="group-hover:rounded-lg rounded-lg z-20 absolute flex items-center justify-center w-full h-full opacity-0 group-hover:opacity-100">
             {props.chars.name}
           </p>
         </div>
