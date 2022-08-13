@@ -21,7 +21,7 @@ export default function Home({ disney }) {
   return (
     <div>
       <Head>
-        <title>Disney Characters</title>
+        <title>Disney Char</title>
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

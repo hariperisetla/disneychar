@@ -2,6 +2,7 @@ import React from "react";
 import CharGallery from "../components/CharGallery";
 import { useRouter } from "next/router";
 import Pagination from "../components/Pagination";
+import Head from "next/head";
 
 // export const getStaticPaths = async () => {
 //   const res = await fetch("https://api.disneyapi.dev/characters");
@@ -31,8 +32,12 @@ export default function Page({ disney }) {
   const router = useRouter();
   const page = router.query.page;
   return (
-    <div className="bg-gray-900 text-white">
-      {/* <div className="flex items-center py-6 justify-center">
+    <div>
+      <Head>
+        <title>Disney Char</title>
+      </Head>
+      <div className="bg-gray-900 text-white">
+        {/* <div className="flex items-center py-6 justify-center">
           <input
             type="text"
             className="block form-control w-96 border border-slate-700 focus:text-white focus:bg-slate-800 focus:border-slate-600 focus:outline-none rounded-lg bg-slate-900 p-2"
@@ -42,18 +47,19 @@ export default function Page({ disney }) {
             Search
           </button>
         </div> */}
-      <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative mx-3 pt-5 container mx-auto">
-        {disney.data.map((chars) => (
-          <CharGallery key={chars._id} chars={chars} />
-        ))}
-      </div>
+        <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative mx-3 pt-5 container mx-auto">
+          {disney.data.map((chars) => (
+            <CharGallery key={chars._id} chars={chars} />
+          ))}
+        </div>
 
-      <Pagination
-        next={Number(page) + Number(1)}
-        prev={Number(page) - Number(1)}
-        current={page}
-        total={disney.totalPages}
-      />
+        <Pagination
+          next={Number(page) + Number(1)}
+          prev={Number(page) - Number(1)}
+          current={page}
+          total={disney.totalPages}
+        />
+      </div>
     </div>
   );
 }
