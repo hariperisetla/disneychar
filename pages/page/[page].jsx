@@ -1,7 +1,7 @@
 import React from "react";
-import CharGallery from "../components/CharGallery";
+import CharGallery from "../../components/CharGallery";
 import { useRouter } from "next/router";
-import Pagination from "../components/Pagination";
+import Pagination from "../../components/Pagination";
 import Head from "next/head";
 
 // export const getStaticPaths = async () => {

@@ -7,8 +7,11 @@ import { useState, useEffect } from "react";
 import CharGallery from "../components/CharGallery";
 import Pagination from "../components/Pagination";
 
+const endpoint = "https://api.disneyapi.dev/characters/";
+const pageEndpoint = "https://api.disneyapi.dev/characters?page=";
+
 export const getServerSideProps = async () => {
-  const res = await fetch("https://api.disneyapi.dev/characters?page=1");
+  const res = await fetch(endpoint);
   const data = await res.json();
   return {
     props: { disney: data },
@@ -16,7 +19,106 @@ export const getServerSideProps = async () => {
 };
 
 export default function Home({ disney }) {
-  const page = 1;
+  const initialData = disney;
+  const [results, setResults] = useState(initialData);
+
+  const [page, updatePage] = useState({
+    ...disney,
+    current: endpoint,
+  });
+
+  const [data, setData] = [];
+  const { current } = page;
+
+  useEffect(() => {
+    if (current === endpoint) return;
+
+    async function request() {
+      const res = await fetch(current);
+      const nextData = await res.json();
+
+      setResults(nextData);
+      window.scrollTo(0, 0);
+
+      updatePage({
+        current,
+        ...nextData,
+      });
+
+      if (!nextData?.previousPage) {
+        // updateResults(nextData.results);
+        setResults(nextData);
+        setTest(1);
+        return;
+      }
+
+      // updateResults((prev) => {
+      //   console.log(nextData);
+      //   return [prev, nextData];
+      // });
+    }
+
+    request();
+  }, [current]);
+
+  function handleLoadMore() {
+    updatePage((prev) => {
+      return {
+        ...prev,
+        current: page?.nextPage,
+      };
+    });
+  }
+
+  function handleNextPage() {
+    updatePage((prev) => {
+      return {
+        ...prev,
+        current: page?.nextPage,
+      };
+    });
+  }
+
+  function handlePreviousPage() {
+    updatePage((prev) => {
+      return { ...prev, current: page?.previousPage };
+    });
+  }
+
+  const currPage = current;
+
+  console.log("currentPage:" + currPage);
+  const number =
+    currPage.split(pageEndpoint)[1] === undefined
+      ? 1
+      : currPage.split(pageEndpoint)[1];
+
+  function handleSinglePage(single) {
+    updatePage(() => {
+      return {
+        prev: pageEndpoint + (single - 1),
+        current: pageEndpoint + single,
+      };
+    });
+  }
+
+  function handleFirstPage() {
+    updatePage(() => {
+      return {
+        prev: pageEndpoint,
+        current: pageEndpoint + 1,
+      };
+    });
+  }
+
+  function handleLastPage() {
+    updatePage(() => {
+      return {
+        prev: pageEndpoint + (results.totalPages - 1).toString(),
+        current: pageEndpoint + page?.totalPages,
+      };
+    });
+  }
 
   return (
     <div>
@@ -85,14 +187,34 @@ export default function Home({ disney }) {
           </button>
         </div> */}
         <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative pt-5 container mx-auto">
-          {disney.data.map((chars) => (
-            <CharGallery key={chars._id} chars={chars} />
-          ))}
+          {results &&
+            results.data.map((chars) => (
+              <CharGallery key={chars._id} chars={chars} />
+            ))}
         </div>
+
+        {[1, 2, 3].map((page) => (
+          <button
+            className="block"
+            key={page}
+            onClick={() => handleSinglePage(page)}
+          >
+            Got to page {page}
+          </button>
+        ))}
+
+        {/* <button onClick={handleSinglePage(2)}>Got to page 2</button>
+        <button onClick={handleSinglePage(3)}>Got to page 3</button> */}
+
         <Pagination
-          next={Number(page) + Number(1)}
-          prev={Number(page) - Number(1)}
-          current={page}
+          handleSinglePage={handleSinglePage}
+          handleFirstPage={handleFirstPage}
+          handlePreviousPage={handlePreviousPage}
+          handleNextPage={handleNextPage}
+          handleLastPage={handleLastPage}
+          next={Number(number) + Number(1)}
+          prev={Number(number) - Number(1)}
+          current={number}
           total={disney.totalPages}
         />
       </div>
