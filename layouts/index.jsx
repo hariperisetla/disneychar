@@ -5,7 +5,7 @@ import React from "react";
 
 const index = ({ children }) => {
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative bg-gray-900">
       <Header />
       <main>{children}</main>
       <Footer />
