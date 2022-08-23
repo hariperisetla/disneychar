@@ -73,7 +73,7 @@ export default function Home({ disney }) {
         <meta name="author" content="Hari Perisetla" />
       </Head>
 
-      <div className="bg-gray-900 text-white">
+      <div className="bg-gray-900 text-white pt-20">
         {/* <div className="flex items-center py-6 justify-center">
           <input
             type="text"

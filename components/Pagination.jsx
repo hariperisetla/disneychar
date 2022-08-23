@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Pagination = ({ next, prev, current, total }) => {
   return (
-    <div className="flex items-center justify-center pb-12">
+    <div className="flex items-center justify-center pb-28">
       <Link
         href={prev.toString() === "0" ? "/" : prev.toString()}
         aria-disabled

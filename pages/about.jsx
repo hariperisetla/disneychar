@@ -7,7 +7,7 @@ const about = () => {
       <Head>
         <title>Disney Char - About</title>
       </Head>
-      <div className="bg-gray-900 text-slate-300">
+      <div className="bg-gray-900 text-slate-300 h-screen pt-20">
         <div className="container mx-auto">
           <div className="justify-center">
             <h1 className="text-3xl font-medium pt-12 p-2 text-center">

@@ -12,7 +12,7 @@ const Header = () => {
 
   return (
     <React.Fragment>
-      <nav className="bg-gray-900 border-b text-slate-300 border-b-slate-700 p-5 flex justify-between items-center">
+      <nav className="bg-gray-900 z-50 border-b fixed text-slate-300 border-b-slate-700 p-5 w-full flex justify-between items-center">
         <Link href="/" className="block ">
           <h1 className="cursor-pointer text-3xl text-slate-300 font-bold">
             Disney Chars
