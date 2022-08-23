@@ -29,9 +29,9 @@ export default function Info({ chars }) {
       <Head>
         <title>Disney Char - {chars.name}</title>
       </Head>
-      <div className="bg-gray-900 text-slate-300 pb-20">
-        <div className="container grid grid-cols-1 w-full md:w-2/4 mx-auto items-center justify-center">
-          <div className="group w-fit sm:w-auto bg-slate-800 p-1 md:p-5 rounded-2xl m-5 md:m-12 items-center justify-center">
+      <div className="bg-gray-900 text-slate-300">
+        <div className="container grid grid-cols-1 w-full py-20 md:w-2/4 mx-auto items-center justify-center">
+          <div className="group w-fit sm:w-auto bg-slate-800 p-1 md:p-5 rounded-2xl m-3 md:m-12 items-center justify-center">
             <div className="border-b border-b-slate-700 pb-3">
               <h1 className="text-3xl font-medium text-center">
                 Character Info
