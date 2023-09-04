@@ -1,134 +1,92 @@
 import Head from "next/head";
-import React from "react";
-
-// export const getStaticPaths = async ({ query }) => {
-//   const res = await fetch("https://api.disneyapi.dev/characters/");
-//   const data = await res.json();
-//   console.log(query);
-//   const paths = data.data.map((char) => {
-//     return {
-//       params: { id: char._id.toString() },
-//     };
-//   });
-
-//   return { paths: paths, fallback: false };
-// };
+import Image from "next/image";
+import React, { useState } from "react";
 
 export const getServerSideProps = async ({ query }) => {
-  const res = await fetch("https://api.disneyapi.dev/characters/" + query.id);
+  const res = await fetch("https://api.disneyapi.dev/character/" + query.id);
   const data = await res.json();
-
   return {
-    props: { chars: data },
+    props: { chars: data.data },
   };
 };
 
 export default function Info({ chars }) {
+  const [loading, setLoading] = useState(true);
+
+  const renderList = (items) => {
+    if (!items || items.length === 0) {
+      return <span className="text-gray-500">N/A</span>;
+    }
+
+    return (
+      <ul className="space-y-8">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div>
       <Head>
         <title>Disney Char - {chars.name}</title>
       </Head>
-      <div className="bg-gray-900 text-slate-300 py-20">
-        <div className="container grid grid-cols-1 w-full md:w-2/4 mx-auto justify-items-center items-center justify-center">
-          <div className="group w-fit sm:w-auto bg-slate-800 p-1 md:p-5 rounded-2xl m-3 md:m-12 items-center justify-center">
-            <div className="border-b border-b-slate-700 pb-3">
-              <h1 className="text-3xl font-medium text-center">
-                Character Info
-              </h1>
+      <div className="bg-gray-900 text-slate-300 py-20 text-center">
+        <div className="mx-auto px-5">
+          <h1 className="text-4xl font-semibold my-5 text-center">
+            {chars.name}
+          </h1>
+
+          <div className=" space-y-8">
+            <div className="flex justify-center items-start">
+              <Image
+                src={chars.imageUrl}
+                alt={chars.name}
+                title={chars.name}
+                width={300}
+                height={300}
+                onLoadingComplete={() => setLoading(false)}
+                className={`object-cover object-center w-full h-96 rounded-2xl shadow-lg ${
+                  loading ? "grayscale blur" : "grayscale-0 blue-0"
+                }`}
+                priority
+              />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="mt-3 overflow-hidden flex justify-center items-start">
-                <img
-                  src={chars.imageUrl}
-                  alt={chars.name}
-                  title={chars.name}
-                  className="object-cover w-full h-96 object-top rounded-2xl"
-                />
+            <div className="grid grid-cols-7 gap-8">
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Films:</h3>
+                <div>{renderList(chars.films)}</div>
               </div>
-              <div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Name</h3>
-                  <h3 className="py-3">{chars.name}</h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Films</h3>
-                  <h3 className="pt-3">
-                    {chars.films.length === 0
-                      ? "N/A"
-                      : chars.films.map((film) => (
-                          <div key={film}>
-                            <h3>{film},</h3>
-                          </div>
-                        ))}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 items-start">
-                  <h3 className="font-medium py-3 px-5">Short Films</h3>
-                  <h3 className="py-3">
-                    {chars.shortFilms.length === 0
-                      ? "N/A"
-                      : chars.shortFilms.map((shortFilm) => (
-                          <div key={shortFilm}>
-                            <h3>{shortFilm}</h3>
-                          </div>
-                        ))}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">TV Shows</h3>
-                  <h3 className="py-3">
-                    {chars.tvShows.length === 0
-                      ? "N/A"
-                      : chars.tvShows.map((tvShow) => (
-                          <div key={tvShow}>
-                            <h3>{tvShow},</h3>
-                          </div>
-                        ))}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Video Games</h3>
-                  <h3 className="py-3">
-                    {chars.videoGames.length === 0 ? "N/A" : chars.videoGames}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Park Attractions</h3>
-                  <h3 className="py-3">
-                    {chars.parkAttractions.length === 0
-                      ? "N/A"
-                      : chars.parkAttractions}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Allies</h3>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Short Films:</h3>
+                <div>{renderList(chars.shortFilms)}</div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">TV Shows:</h3>
+                <div>{renderList(chars.tvShows)}</div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Video Games:</h3>
+                <div>{renderList(chars.videoGames)}</div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Park Attractions:</h3>
 
-                  <h3 className="py-3">
-                    {chars.allies.length === 0 ? "N/A" : chars.allies}
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2">
-                  <h3 className="font-medium py-3 px-5">Enemies</h3>
-                  <h3 className="py-3">
-                    {chars.enemies.length === 0 ? "N/A" : chars.enemies}
-                  </h3>
-                </div>
+                <div>{renderList(chars.parkAttractions)}</div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Allies:</h3>
+                <div>{renderList(chars.allies)}</div>
+              </div>
+              <div className="space-y-3">
+                <h3 className="font-semibold text-2xl">Enemies:</h3>
+                <div>{renderList(chars.enemies)}</div>
               </div>
             </div>
           </div>
         </div>
-        {/* <h1>Character Info</h1>
-      <h2>Name: {chars.name}</h2>
-      <h2>films {chars.films}</h2>
-      <h2>shortFilms {chars.shortFilms}</h2>
-      <h2>tvShows {chars.tvShows}</h2>
-      <h2>videoGames {chars.videoGames}</h2>
-      <h2>parkAttractions {chars.parkAttractions}</h2>
-      <h2>allies {chars.allies}</h2>
-      <h2>enemies {chars.enemies}</h2>
-      <h2>imageUrl {chars.imageUrl}</h2> */}
       </div>
     </div>
   );

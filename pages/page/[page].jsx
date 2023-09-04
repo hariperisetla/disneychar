@@ -1,7 +1,7 @@
 import React from "react";
-import CharGallery from "../components/CharGallery";
+import CharGallery from "../../components/CharGallery";
 import { useRouter } from "next/router";
-import Pagination from "../components/Pagination";
+import Pagination from "../../components/Pagination";
 import Head from "next/head";
 
 // export const getStaticPaths = async () => {
@@ -17,9 +17,9 @@ import Head from "next/head";
 //   return { paths: paths, fallback: false };
 // };
 
-export const getServerSideProps = async ({ query }) => {
+export const getStaticProps = async ({ query }) => {
   const res = await fetch(
-    "https://api.disneyapi.dev/characters/?page=" + query.page
+    "https://api.disneyapi.dev/character/?page=" + query.page
   );
   const data = await res.json();
 

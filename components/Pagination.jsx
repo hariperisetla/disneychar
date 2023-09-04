@@ -24,7 +24,7 @@ const Pagination = ({ next, prev, current, total }) => {
           {total}
         </a>
       </Link> */}
-      <Link href={next.toString()}>
+      <Link href={`/page/${next.toString()}`}>
         <a className="p-3 border border-slate-700 rounded-r-xl hover:bg-slate-700 focus:bg-slate-700">
           Next
         </a>

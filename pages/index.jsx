@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 import CharGallery from "../components/CharGallery";
 import Pagination from "../components/Pagination";
 
-export const getServerSideProps = async () => {
-  const res = await fetch("https://api.disneyapi.dev/characters?page=1");
+export const getStaticProps = async () => {
+  const res = await fetch("https://api.disneyapi.dev/character?page=1");
   const data = await res.json();
   return {
     props: { disney: data },
@@ -17,6 +17,69 @@ export const getServerSideProps = async () => {
 
 export default function Home({ disney }) {
   const page = 1;
+  const [value, setValue] = useState("");
+  const [result, setResult] = useState([]);
+
+  // const searchCharacter = () => {
+  //   if (value.length > 0) {
+  //     fetch("https://api.disneyapi.dev/character?name=" + value)
+  //       .then((res) => res.json())
+  //       .then((res) => {
+  //         setResult([]);
+  //         let search = value.toLowerCase();
+  //         let resData = res.data;
+  //         let count = 0; // Counter to keep track of results
+
+  //         for (const key in resData) {
+  //           let character = resData[key].name.toLowerCase();
+  //           if (character.slice(0, search.length).indexOf(search) !== -1) {
+  //             setResult((prev) => {
+  //               if (count < 5) {
+  //                 count++; // Increment the counter
+  //                 return [...prev, resData[key].name];
+  //               }
+  //               return prev; // Don't add more than 5 results
+  //             });
+  //           }
+
+  //           if (count === 5) {
+  //             break; // Break out of the loop when 5 results are found
+  //           }
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // };
+
+  useEffect(() => {
+    if (value.length > 0) {
+      fetch("https://api.disneyapi.dev/character?name=" + value)
+        .then((res) => res.json())
+        .then((res) => {
+          let search = value.toLowerCase();
+          let resData = res.data;
+          let results = [];
+
+          for (const key in resData) {
+            let character = resData[key].name.toLowerCase();
+            if (character.slice(0, search.length).indexOf(search) !== -1) {
+              if (results.length < 5) {
+                // Limit the results to at most 5
+                results.push({
+                  name: resData[key].name,
+                  id: resData[key]._id.toString(),
+                });
+              } else {
+                break; // Exit the loop when 5 results are found
+              }
+            }
+          }
+
+          setResult(results);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [value]);
 
   return (
     <div>
@@ -74,16 +137,39 @@ export default function Home({ disney }) {
       </Head>
 
       <div className="bg-gray-900 text-white pt-20">
-        {/* <div className="flex items-center py-6 justify-center">
+        <div className="flex items-center py-6 justify-center relative">
           <input
             type="text"
             className="block form-control w-96 border border-slate-700 focus:text-white focus:bg-slate-800 focus:border-slate-600 focus:outline-none rounded-lg bg-slate-900 p-2"
             placeholder="Search..."
+            onChange={(event) => setValue(event.target.value)}
+            value={value}
           />
-          <button className="m-2 bg-slate-700 py-2 px-5 rounded-lg border border-slate-700 hover:bg-slate-800 hover:border-slate-700 focus:bg-slate-800">
+          {/* <button
+            className="m-2 bg-slate-700 py-2 px-5 rounded-lg border border-slate-700 hover:bg-slate-800 hover:border-slate-700 focus:bg-slate-800"
+            onClick={() => {
+              // Trigger the search when the button is clicked
+              searchCharacter();
+            }}
+          >
             Search
-          </button>
-        </div> */}
+          </button> */}
+
+          {value && (
+            <ul className="absolute z-20 bg-gray-800 w-96 py-2 shadow-md mt-2 rounded-lg top-14">
+              {result.map((char) => (
+                <li key={char.id}>
+                  {console.log(char.id)}
+                  <Link href={`/characters/${char.id}`}>
+                    <a className="block px-4 py-2 hover:bg-gray-700">
+                      {char.name}
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div className="grid gap-3 mb-8 grid-cols-2 md:grid-cols-6 xl:grid-cols-8 relative pt-5 container mx-auto">
           {disney.data.map((chars) => (
             <CharGallery key={chars._id} chars={chars} />
