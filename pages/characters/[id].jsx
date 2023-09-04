@@ -54,7 +54,7 @@ export default function Info({ chars }) {
               />
             </div>
 
-            <div className="grid grid-cols-7 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-7 gap-8">
               <div className="space-y-3">
                 <h3 className="font-semibold text-2xl">Films:</h3>
                 <div>{renderList(chars.films)}</div>
